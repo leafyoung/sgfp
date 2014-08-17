@@ -39,17 +39,16 @@ main :: IO ()
 main = do
   args <- getArgs
   print args
-  if length args > 0 then
-    mainBenchmark
-  else
-    mainDemo
+  if length args > 0
+    then mainBenchmark
+    else mainDemo
 
 mainBenchmark :: IO ()
 mainBenchmark = do
   seq <- readFile "seq.dna"
 
   defaultMain [
-    bgroup "CountSeq" [ bench "foldl'"       $ whnf countNuc seq -- foldl
+    bgroup "CountSeq" [ bench "foldl'"      $ whnf countNuc seq -- foldl
                       , bench "State Monad" $ whnf countNuc2 seq -- State Monad
                       , bench "ST Monad"    $ whnf countNuc2ST seq -- ST Monad
                       , bench "IORef"       $ whnfIO $ countNuc3 seq =<< newIORef emptySeqInfo -- IORef
